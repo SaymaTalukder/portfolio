@@ -1,0 +1,212 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --ink: #050505;
+  --plum: #17102b;
+  --lime: #c4e77b;
+  --blush: #f04a9b;
+  --aqua: #54d6e8;
+  --lilac: #a99bef;
+  --paper: #f5f5f5;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+}
+
+body {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(196, 231, 123, 0.85);
+  color: #050505;
+}
+
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0f;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #c4e77b, #49318a);
+  border-radius: 0;
+}
+
+/* ---- Layout helpers ---- */
+@layer components {
+  /* Editorial container: wide gutters, generous rhythm */
+  .shell {
+    @apply mx-auto w-full max-w-[1280px] px-5 sm:px-8 lg:px-12;
+  }
+
+  /* Oversized display type with tight editorial tracking */
+  .display {
+    @apply font-display uppercase leading-[0.82] tracking-tightest;
+  }
+
+  /* Rounded outlined pill tag */
+  .tag-outline {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-white/25 px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-white/85 transition-all duration-300;
+  }
+
+  /* Solid sticker shape */
+  .sticker {
+    @apply inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[11px] font-display uppercase tracking-wider text-ink-950;
+  }
+
+  /* Primary CTA — lime slab with hard offset shadow */
+  .btn-lime {
+    @apply relative inline-flex items-center justify-center gap-2 rounded-full bg-lime px-7 py-3.5 font-display text-sm uppercase tracking-wider text-ink-950 transition-all duration-300;
+    box-shadow: 0 0 0 rgba(196, 231, 123, 0);
+  }
+  .btn-lime:hover {
+    box-shadow: 6px 6px 0 0 #f04a9b;
+    transform: translate(-2px, -2px);
+  }
+
+  /* Secondary CTA — outline */
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-lime/70 px-7 py-3.5 font-display text-sm uppercase tracking-wider text-lime transition-all duration-300;
+  }
+  .btn-outline:hover {
+    @apply bg-lime text-ink-950;
+    box-shadow: 6px 6px 0 0 #49318a;
+    transform: translate(-2px, -2px);
+  }
+
+  /* Section eyebrow label */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-[11px] font-display uppercase tracking-[0.3em];
+  }
+
+  /* Card base: near-black with a hairline edge */
+  .panel {
+    @apply relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-ink-900/70 backdrop-blur-sm;
+  }
+
+  /* Noise + grain overlay used across dark sections */
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  /* Serif italic accent used for editorial pull quotes */
+  .serif-accent {
+    @apply font-serif italic;
+  }
+
+  /* Skill chip — picks up its group's accent colour on hover */
+  .skill-chip:hover {
+    border-color: var(--chip-accent, #c4e77b);
+    color: var(--chip-accent, #c4e77b);
+  }
+}
+
+/* ---- Utilities ---- */
+.text-stroke-lime {
+  -webkit-text-stroke: 2px rgba(196, 231, 123, 0.9);
+  color: transparent;
+}
+
+.text-stroke-paper {
+  -webkit-text-stroke: 2px rgba(245, 245, 245, 0.85);
+  color: transparent;
+}
+
+.mask-fade-x {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.mask-fade-b {
+  -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent);
+  mask-image: linear-gradient(180deg, #000 60%, transparent);
+}
+
+/* Rotating circular badge text */
+.badge-spin {
+  animation: spinSlow 22s linear infinite;
+  transform-origin: center;
+}
+.badge-spin-reverse {
+  animation: spinReverse 30s linear infinite;
+  transform-origin: center;
+}
+
+/* Animated text reveal for headings */
+.reveal-line {
+  overflow: hidden;
+}
+.reveal-line > span {
+  display: block;
+  transform: translateY(105%);
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-line.is-visible > span {
+  transform: translateY(0);
+}
+
+/* Ribbon strips */
+.ribbon-strip {
+  transform: skewX(-12deg);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+}
+.ribbon-strip:hover {
+  transform: skewX(-12deg) translateX(10px) scale(1.015);
+  filter: brightness(1.12);
+}
+.ribbon-strip > * {
+  transform: skewX(12deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal-line > span {
+    transform: none;
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* ---- Keyframes used by the inline SVG project previews ---- */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
