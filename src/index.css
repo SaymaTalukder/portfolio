@@ -22,12 +22,7 @@ body {
   background: var(--ink);
   color: var(--paper);
   font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-}
-
-html {
-  overflow-x: hidden;
 }
 
 /*
