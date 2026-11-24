@@ -26,6 +26,33 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+html {
+  overflow-x: hidden;
+}
+
+/*
+ * Grid and flex children default to min-width:auto, which lets a wide
+ * descendant (long unbreakable word, nowrap span, wide table) stretch its
+ * track past the viewport and clip the page on phones. Resetting min-width
+ * on these containers keeps every track inside the screen.
+ */
+.shell > *,
+.grid > *,
+.flex.flex-wrap > * {
+  min-width: 0;
+}
+
+/* Never let a single token overflow its column on narrow screens. */
+h1,
+h2,
+h3,
+p,
+span,
+a,
+li {
+  overflow-wrap: break-word;
+}
+
 ::selection {
   background: rgba(196, 231, 123, 0.85);
   color: #050505;

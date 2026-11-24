@@ -138,19 +138,23 @@ export default function Hero() {
         </h1>
 
         {/* ---------- Subtitle + intro ---------- */}
-        <div className="relative mt-10 grid gap-8 lg:grid-cols-12 lg:items-end">
+        <div className="relative mt-10 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.28 }}
-            className="lg:col-span-7"
+            className="min-w-0 lg:col-span-7"
           >
             <p className="font-display text-base uppercase leading-[1.35] tracking-[0.06em] text-aqua sm:text-xl lg:text-2xl">
-              <span className="whitespace-nowrap">Data Science Student</span>
+              <span className="whitespace-normal lg:whitespace-nowrap">
+                Data Science Student
+              </span>
               <span className="mx-2 text-blush">|</span>
-              <span className="whitespace-nowrap">Sales Tech Engineer</span>
+              <span className="whitespace-normal lg:whitespace-nowrap">
+                Sales Tech Engineer
+              </span>
               <span className="mx-2 text-blush">|</span>
-              <span className="whitespace-nowrap text-lime">
+              <span className="whitespace-normal text-lime lg:whitespace-nowrap">
                 AI &amp; ML Enthusiast
               </span>
             </p>

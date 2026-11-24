@@ -123,14 +123,14 @@ export default function About() {
           description="Half analyst, half communicator — and entirely driven by problems that need both."
         />
 
-        <div className="mt-16 grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div className="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-10">
           {/* ---------- Left: name + photo ---------- */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-4"
+            className="min-w-0 lg:col-span-4"
           >
             <p className="font-serif text-3xl leading-tight text-paper sm:text-4xl">
               Sayma
@@ -157,7 +157,7 @@ export default function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.75, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5"
+            className="min-w-0 lg:col-span-5"
           >
             <div className="relative rounded-[1.75rem] border border-white/10 bg-ink-900/60 p-7 sm:p-9">
               <span className="absolute -left-px top-8 h-16 w-[3px] rounded-full bg-lime" />
@@ -195,7 +195,7 @@ export default function About() {
           </motion.div>
 
           {/* ---------- Right: information cards ---------- */}
-          <div className="lg:col-span-3">
+          <div className="min-w-0 lg:col-span-3">
             <div className="flex flex-col gap-4">
               {infoCards.map((card, i) => (
                 <motion.div

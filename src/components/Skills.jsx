@@ -173,7 +173,7 @@ export default function Skills() {
           description="Four shelves of tools, each one earned on a real project, a real dataset, or a real client call."
         />
 
-        <div className="mt-16 grid gap-6 md:grid-cols-2">
+        <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2">
           {skillGroups.map((group, i) => (
             <SkillCard key={group.id} group={group} index={i} />
           ))}

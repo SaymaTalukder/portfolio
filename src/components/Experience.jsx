@@ -44,7 +44,7 @@ function TimelineCard({ exp, index }) {
   const flipped = index % 2 === 1;
 
   return (
-    <div className="relative grid gap-6 md:grid-cols-2 md:gap-0">
+    <div className="relative grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-0">
       {/* Spine node */}
       <motion.div
         initial={{ scale: 0, opacity: 0 }}

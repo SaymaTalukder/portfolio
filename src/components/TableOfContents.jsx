@@ -82,7 +82,7 @@ function Ribbon({ ribbon, index }) {
         </span>
 
         {/* Repeating marquee of the label */}
-        <span className="flex h-11 items-center gap-6 pl-16 pr-4">
+        <span className="flex h-11 min-w-0 items-center gap-6 pl-16 pr-4">
           <span
             className="whitespace-nowrap font-display text-sm uppercase tracking-[0.18em] sm:text-base"
             style={{ color: ink }}

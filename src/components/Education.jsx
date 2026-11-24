@@ -39,7 +39,7 @@ export default function Education() {
           description="The formal track — and everything I picked up alongside it."
         />
 
-        <div className="mt-16 grid gap-6 lg:grid-cols-12">
+        <div className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-12">
           {education.map((item, i) => (
             <motion.article
               key={item.abbr}
@@ -48,7 +48,7 @@ export default function Education() {
               viewport={{ once: true, margin: '-80px' }}
               transition={{ duration: 0.65, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -6 }}
-              className="group relative overflow-hidden rounded-[1.75rem] border p-8 transition-colors duration-300 hover:border-white/30 lg:col-span-6"
+              className="group relative min-w-0 overflow-hidden rounded-[1.75rem] border p-8 transition-colors duration-300 hover:border-white/30 lg:col-span-6"
               style={{
                 borderColor: item.border,
                 background: `linear-gradient(155deg, ${item.tint}, rgba(10,10,15,0.9) 60%)`,

@@ -149,14 +149,14 @@ export default function Contact() {
         </div>
 
         {/* ---------- Grid: channels + form ---------- */}
-        <div className="mt-16 grid gap-6 lg:grid-cols-12">
+        <div className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Channels */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col gap-4 lg:col-span-5"
+            className="flex min-w-0 flex-col gap-4 lg:col-span-5"
           >
             <ChannelCard
               icon={Mail}
@@ -198,11 +198,11 @@ export default function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="relative overflow-hidden rounded-[2rem] border border-white/12 bg-ink-900/70 p-7 backdrop-blur-sm sm:p-9 lg:col-span-7"
+            className="relative min-w-0 overflow-hidden rounded-[2rem] border border-white/12 bg-ink-900/70 p-7 backdrop-blur-sm sm:p-9 lg:col-span-7"
           >
             <span className="absolute inset-x-0 top-0 h-[3px] bg-rule-lime" />
 
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
               {fields.map((f) => (
                 <TextField
                   key={f.name}
@@ -213,7 +213,7 @@ export default function Contact() {
                 />
               ))}
 
-              <div className="sm:col-span-2">
+              <div className="min-w-0 sm:col-span-2">
                 <label
                   htmlFor="contact-message"
                   className="mb-2 block font-display text-[10px] uppercase tracking-[0.22em] text-white/45"

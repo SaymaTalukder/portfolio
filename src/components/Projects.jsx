@@ -305,7 +305,7 @@ export default function Projects() {
             <FeatureCard key={p.id} project={p} index={i} />
           ))}
 
-          <div className="grid gap-6 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {half.map((p, i) => (
               <HalfCard key={p.id} project={p} index={i} />
             ))}
