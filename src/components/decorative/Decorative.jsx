@@ -38,7 +38,7 @@ export function Burst({ className = '', size = 40, fill = 'currentColor' }) {
 }
 
 /** Squiggly hand-drawn underline. */
-export function Squiggle({ className = '', width = 160, color = '#C4E77B' }) {
+export function Squiggle({ className = '', width = 160, color = '#FF8A3D' }) {
   return (
     <svg
       width={width}
@@ -96,7 +96,7 @@ export function Blob({ className = '', fill = '#49318A' }) {
 }
 
 /** Hand-drawn arrow for editorial call-outs. */
-export function HandArrow({ className = '', color = '#F04A9B', width = 120 }) {
+export function HandArrow({ className = '', color = '#FFA25C', width = 120 }) {
   return (
     <svg
       width={width}
@@ -140,7 +140,7 @@ export function PlusMark({ className = '', size = 16, color = 'currentColor' }) 
 }
 
 /** Concentric ring target used for the "focus" motif. */
-export function TargetRings({ className = '', size = 90, color = '#C4E77B' }) {
+export function TargetRings({ className = '', size = 90, color = '#FF8A3D' }) {
   return (
     <svg
       width={size}
@@ -159,7 +159,7 @@ export function TargetRings({ className = '', size = 90, color = '#C4E77B' }) {
 }
 
 /** Scribbled circle highlight (like a marker ring around a word). */
-export function MarkerRing({ className = '', color = '#F04A9B' }) {
+export function MarkerRing({ className = '', color = '#FFA25C' }) {
   return (
     <svg
       viewBox="0 0 200 60"

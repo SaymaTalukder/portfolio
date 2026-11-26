@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { GraduationCap, Award, Star } from 'lucide-react';
 import SectionHeading from './SectionHeading.jsx';
-import { DashedRing, Squiggle, Burst } from './decorative/Decorative.jsx';
+import { ChromeSweep, Reveal, LightPool } from './Cinematic.jsx';
 
 const education = [
   {
@@ -9,10 +9,10 @@ const education = [
     abbr: 'BSDS',
     school: 'United International University (UIU)',
     status: 'Currently Ongoing',
-    statusColor: '#C4E77B',
-    accent: '#C4E77B',
-    tint: 'rgba(196,231,123,0.10)',
-    border: 'rgba(196,231,123,0.30)',
+    statusColor: '#FF8A3D',
+    accent: '#FF8A3D',
+    tint: 'rgba(255,138,61,0.07)',
+    border: 'rgba(255,138,61,0.24)',
     icon: GraduationCap,
   },
   {
@@ -20,18 +20,23 @@ const education = [
     abbr: 'HSC',
     school: 'Adamjee Cantonment College',
     status: 'Passed: 2021',
-    statusColor: '#A99BEF',
-    accent: '#A99BEF',
-    tint: 'rgba(169,155,239,0.10)',
-    border: 'rgba(169,155,239,0.30)',
+    statusColor: '#FFA25C',
+    accent: '#FFA25C',
+    tint: 'rgba(255,162,92,0.07)',
+    border: 'rgba(255,162,92,0.24)',
     icon: Award,
   },
 ];
 
 export default function Education() {
   return (
-    <section id="education" className="relative px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
-      <div className="shell">
+    <section
+      id="education"
+      className="relative overflow-hidden px-5 py-24 sm:px-8 sm:py-32 lg:px-12"
+    >
+      <LightPool position="top" intensity={0.06} className="top-0" />
+
+      <div className="shell relative">
         <SectionHeading
           eyebrow="05 — Education"
           title="WHERE THE"
@@ -48,26 +53,27 @@ export default function Education() {
               viewport={{ once: true, margin: '-80px' }}
               transition={{ duration: 0.65, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -6 }}
-              className="group relative min-w-0 overflow-hidden rounded-[1.75rem] border p-8 transition-colors duration-300 hover:border-white/30 lg:col-span-6"
+              className="chrome-border group relative min-w-0 overflow-hidden rounded-[1.75rem] border p-8 transition-colors duration-300 hover:border-white/28 lg:col-span-6"
               style={{
                 borderColor: item.border,
-                background: `linear-gradient(155deg, ${item.tint}, rgba(10,10,15,0.9) 60%)`,
+                background: `linear-gradient(155deg, ${item.tint}, rgba(10,10,15,0.9) 62%)`,
               }}
             >
               {/* Oversized abbreviation */}
               <span
-                className="pointer-events-none absolute -right-2 -top-6 font-display text-[6.5rem] leading-none opacity-[0.07]"
+                className="pointer-events-none absolute bottom-3 right-4 select-none font-display text-[3.4rem] leading-none tracking-tight opacity-[0.07]"
                 style={{ color: item.accent }}
               >
                 {item.abbr}
               </span>
 
               <div className="relative flex items-start gap-4">
+                {/* Brushed metal icon plate */}
                 <span
-                  className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border"
+                  className="chrome-border grid h-12 w-12 shrink-0 place-items-center rounded-2xl border transition-transform duration-500 group-hover:scale-105"
                   style={{
                     borderColor: item.border,
-                    background: item.tint,
+                    background: `linear-gradient(140deg, rgba(255,255,255,0.10), ${item.tint})`,
                     color: item.accent,
                   }}
                 >
@@ -98,51 +104,57 @@ export default function Education() {
               </div>
 
               <div className="relative mt-7 flex items-center gap-3 border-t border-white/10 pt-5">
-                <Squiggle className="h-2.5 w-24" color={item.accent} />
                 <Star className="h-3 w-3" style={{ color: item.accent }} />
                 <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/35">
                   {item.abbr}
                 </span>
+                <span
+                  className="h-px flex-1"
+                  style={{ background: item.accent, opacity: 0.35 }}
+                  aria-hidden="true"
+                />
               </div>
+
+              <ChromeSweep />
             </motion.article>
           ))}
 
           {/* Side note panel */}
-          <motion.div
-            initial={{ opacity: 0, y: 34 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.65, delay: 0.2 }}
-            className="relative overflow-hidden rounded-[1.75rem] border border-dashed border-white/18 p-8 lg:col-span-12"
-          >
-            <DashedRing className="absolute -right-8 -top-8 h-32 w-32 animate-spinSlow text-lime/25" />
-            <Burst className="absolute -bottom-4 left-6 h-8 w-8 animate-wiggle text-blush/60" />
+          {/* The Reveal wrapper is the grid child, so it carries the column
+              span — putting it on the inner div left this panel squeezed
+              into a single narrow track. */}
+          <Reveal delay={0.2} className="lg:col-span-12">
+            <div className="chrome-border relative overflow-hidden rounded-[1.75rem] border border-white/12 bg-ink-900/50 p-8 backdrop-blur-sm">
+              <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                <div className="max-w-2xl">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-ember">
+                    Beyond the syllabus
+                  </p>
+                  <p className="mt-4 font-serif text-2xl italic leading-snug text-white/85 sm:text-3xl">
+                    Two years of marketing taught me how to explain a technical
+                    idea to a room that didn&apos;t speak code.
+                  </p>
+                </div>
 
-            <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-              <div className="max-w-2xl">
-                <p className="font-display text-[10px] uppercase tracking-[0.28em] text-lime">
-                  Beyond the syllabus
-                </p>
-                <p className="mt-4 font-serif text-2xl italic leading-snug text-white/85 sm:text-3xl">
-                  Two years of marketing taught me how to explain a technical
-                  idea to a room that didn&apos;t speak code.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {['Self-taught dev', 'Open-source collabs', 'Client-facing demos'].map(
-                  (t) => (
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    'Self-taught dev',
+                    'Open-source collabs',
+                    'Client-facing demos',
+                  ].map((t) => (
                     <span
                       key={t}
-                      className="rounded-full border border-white/20 px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-white/60"
+                      className="rounded-full border border-white/15 bg-white/[0.03] px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-white/60"
                     >
                       {t}
                     </span>
-                  )
-                )}
+                  ))}
+                </div>
               </div>
+
+              <ChromeSweep />
             </div>
-          </motion.div>
+          </Reveal>
         </div>
       </div>
     </section>

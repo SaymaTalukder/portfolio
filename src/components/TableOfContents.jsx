@@ -1,63 +1,23 @@
 import { motion } from 'framer-motion';
-import { Star, Burst, PlusMark } from './decorative/Decorative.jsx';
+import { Star, PlusMark } from './decorative/Decorative.jsx';
+import { ChromeSweep } from './Cinematic.jsx';
 
 /**
- * Table of Contents — horizontal ribbon strips, each with its own accent
- * colour and decorative symbol. Clicking a ribbon scrolls to its section.
+ * Table of Contents — a chapter list styled as glass rails, matching the
+ * hero's material language. Each row carries its own accent colour for
+ * wayfinding while the surface treatment stays consistent.
  */
 const ribbons = [
-  {
-    id: 'about',
-    label: 'About Me',
-    repeat: 'About Me',
-    color: '#F5F5F5',
-    ink: '#050505',
-    symbol: '★',
-  },
-  {
-    id: 'skills',
-    label: 'Skills & Expertise',
-    repeat: 'Skills & Expertise',
-    color: '#C4E77B',
-    ink: '#050505',
-    symbol: '✳',
-  },
-  {
-    id: 'experience',
-    label: 'Experience',
-    repeat: 'Experience',
-    color: '#49318A',
-    ink: '#F5F5F5',
-    symbol: '◉',
-  },
-  {
-    id: 'projects',
-    label: 'Featured Projects',
-    repeat: 'Featured Projects',
-    color: '#54D6E8',
-    ink: '#050505',
-    symbol: '✦',
-  },
-  {
-    id: 'education',
-    label: 'Education',
-    repeat: 'Education',
-    color: '#F04A9B',
-    ink: '#050505',
-    symbol: '✚',
-  },
-  {
-    id: 'contact',
-    label: 'Contact',
-    repeat: 'Contact',
-    color: '#F5E6A8',
-    ink: '#050505',
-    symbol: '◆',
-  },
+  { id: 'about', label: 'About Me', accent: '#E8EAED', symbol: '★' },
+  { id: 'skills', label: 'Skills & Expertise', accent: '#FF8A3D', symbol: '✳' },
+  { id: 'experience', label: 'Experience', accent: '#FFB37A', symbol: '◉' },
+  { id: 'projects', label: 'Featured Projects', accent: '#FFA25C', symbol: '✦' },
+  { id: 'education', label: 'Education', accent: '#FFA25C', symbol: '✚' },
+  { id: 'contact', label: 'Contact', accent: '#FFD3A8', symbol: '◆' },
 ];
 
 function Ribbon({ ribbon, index }) {
-  const { id, label, repeat, color, ink, symbol } = ribbon;
+  const { id, label, accent, symbol } = ribbon;
 
   return (
     <motion.div
@@ -69,24 +29,23 @@ function Ribbon({ ribbon, index }) {
     >
       <a
         href={`#${id}`}
-        className="ribbon-strip group relative block w-full overflow-hidden border-y-2 border-ink-950/60 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.8)]"
-        style={{ background: color }}
+        className="chrome-border group relative block w-full overflow-hidden rounded-xl border border-white/12 bg-ink-900/60 backdrop-blur-sm transition-all duration-300 hover:border-white/30 hover:bg-ink-900/85"
         aria-label={`Jump to ${label}`}
       >
-        {/* Numbered leading block */}
+        {/* Accent rail on the leading edge */}
         <span
-          className="absolute left-0 top-0 flex h-full w-11 items-center justify-center font-display text-sm font-black"
-          style={{ background: ink, color }}
-        >
+          className="absolute inset-y-0 left-0 w-[3px] origin-top transition-transform duration-500 group-hover:scale-y-100"
+          style={{ background: accent, transform: 'scaleY(100%)' }}
+          aria-hidden="true"
+        />
+
+        {/* Numbered leading block */}
+        <span className="absolute left-0 top-0 flex h-full w-11 items-center justify-center border-r border-white/10 bg-ink-950/60 font-display text-sm font-black text-white/40">
           {index + 1}.
         </span>
 
-        {/* Repeating marquee of the label */}
-        <span className="flex h-11 min-w-0 items-center gap-6 pl-16 pr-4">
-          <span
-            className="whitespace-nowrap font-display text-sm uppercase tracking-[0.18em] sm:text-base"
-            style={{ color: ink }}
-          >
+        <span className="flex h-12 min-w-0 items-center gap-6 pl-16 pr-4">
+          <span className="whitespace-nowrap font-display text-sm uppercase tracking-[0.2em] text-silver-200 transition-colors duration-300 group-hover:text-white sm:text-base">
             {label}
           </span>
 
@@ -94,23 +53,20 @@ function Ribbon({ ribbon, index }) {
             {Array.from({ length: 8 }).map((_, i) => (
               <span
                 key={i}
-                className="flex shrink-0 items-center gap-6 whitespace-nowrap font-display text-sm uppercase tracking-[0.18em]"
-                style={{ color: ink, opacity: 0.55 }}
+                className="flex shrink-0 items-center gap-6 whitespace-nowrap font-display text-sm uppercase tracking-[0.2em] text-white/20"
               >
-                {repeat}
-                <span style={{ color: ink }}>{symbol}</span>
+                {label}
+                <span style={{ color: accent, opacity: 0.5 }}>{symbol}</span>
               </span>
             ))}
           </span>
 
-          {/* Arrow at the trailing edge */}
-          <span
-            className="ml-auto flex h-full w-11 shrink-0 items-center justify-center opacity-70 transition-transform duration-300 group-hover:translate-x-1"
-            style={{ color: ink }}
-          >
+          <span className="ml-auto flex h-full w-11 shrink-0 items-center justify-center text-white/30 transition-all duration-300 group-hover:translate-x-1 group-hover:text-white/70">
             ▸
           </span>
         </span>
+
+        <ChromeSweep />
       </a>
     </motion.div>
   );
@@ -122,12 +78,12 @@ export default function TableOfContents() {
       id="toc"
       className="relative overflow-hidden px-5 py-24 sm:px-8 sm:py-32 lg:px-12"
     >
-      {/* Plum gradient field behind the ribbons */}
+      {/* Scene light behind the chapter list */}
       <div
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
           background:
-            'radial-gradient(ellipse 80% 70% at 50% 50%, #24134B 0%, #17102B 45%, #050505 85%)',
+            'radial-gradient(ellipse 70% 55% at 50% 40%, rgba(232,234,237,0.06) 0%, rgba(5,5,5,0) 72%)',
         }}
         aria-hidden="true"
       />
@@ -140,26 +96,29 @@ export default function TableOfContents() {
           transition={{ duration: 0.7 }}
           className="text-center"
         >
-          <p className="eyebrow justify-center text-lime/90">
-            <span className="h-px w-8 bg-lime" aria-hidden="true" />
-            Table of contents
-            <span className="h-px w-8 bg-lime" aria-hidden="true" />
-          </p>
+          <div className="flex items-center justify-center gap-3">
+            <span className="h-px w-8 bg-ember" aria-hidden="true" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.34em] text-white/45 sm:text-[11px]">
+              Table of contents
+            </span>
+            <span className="h-px w-8 bg-ember" aria-hidden="true" />
+          </div>
 
-          <h2 className="display mt-5 text-[clamp(2.2rem,6.5vw,4.6rem)] text-paper">
-            PICK A{' '}
-            <span className="relative inline-block text-lime">
-              THREAD
-              <Burst className="absolute -right-8 -top-6 h-7 w-7 animate-wiggle text-blush" />
+          <h2
+            className="display metal-depth relative mt-5 text-[clamp(2.2rem,6.5vw,4.6rem)] leading-[0.95] tracking-tight"
+            data-depth-text="PICK A THREAD"
+          >
+            <span className="metal metal-sheen relative block">
+              PICK A <span className="metal-accent">THREAD</span>
             </span>
           </h2>
 
           <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-white/55 sm:text-lg">
-            Six stops, one story. Tap any ribbon to jump straight there.
+            Six stops, one story. Tap any rail to jump straight there.
           </p>
         </motion.div>
 
-        {/* Ribbons */}
+        {/* Chapter list */}
         <nav
           aria-label="Table of contents"
           className="mt-14 flex flex-col gap-3 sm:gap-4"
@@ -170,11 +129,11 @@ export default function TableOfContents() {
         </nav>
 
         <div className="mt-12 flex items-center justify-center gap-3">
-          <Star className="h-3.5 w-3.5 animate-floaty text-lime/60" />
+          <Star className="h-3.5 w-3.5 animate-floaty text-ember/60" />
           <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-white/35">
             End of the thread · scroll back up any time
           </p>
-          <PlusMark className="h-3 w-3 text-lilac/60" />
+          <PlusMark className="h-3 w-3 text-ember-glow/60" />
         </div>
       </div>
     </section>

@@ -1,254 +1,313 @@
-import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
-import { Star, Burst, Squiggle, HandArrow, PlusMark } from './decorative/Decorative.jsx';
-
-const skillTags = [
-  'Data Science',
-  'Machine Learning',
-  'AI',
-  'Technical Sales',
-  'Web Development',
-  'QA Testing',
-];
 
 /**
- * Rotating circular badge text.
- * The SVG path draws a circle; the text is placed on that path so it
- * travels around the ring.
+ * Hero — the cinematic opening sequence.
+ *
+ * Timeline (seconds from mount):
+ *   0.00  screen is fully dark, only a faint light pool breathes
+ *   0.15  "SAYMA TALUKDER" reveals letter-by-letter with a mask wipe
+ *   0.95  name lifts away, PORTFOLIO rises as a metallic 3D-style block
+ *   1.70  a glitch/scan sweep passes across PORTFOLIO
+ *   2.05  professional title fades up underneath
+ *   2.35  the two CTA buttons arrive
+ *   2.70  the persistent HUD (scroll cue + meta rail) settles in
+ *
+ * The whole sequence is skippable — pressing any key or clicking jumps
+ * straight to the settled state — and it collapses instantly for visitors
+ * who prefer reduced motion.
  */
-function CircularBadge() {
-  const text = 'DATA • AI • TECHNOLOGY • ';
+
+const NAME = 'SAYMA TALUKDER';
+const LETTERS = NAME.split('');
+
+/** Per-letter reveal offsets so the name cascades instead of popping. */
+const letterVariants = {
+  hidden: { y: '110%', opacity: 0 },
+  show: (i) => ({
+    y: '0%',
+    opacity: 1,
+    transition: {
+      delay: 0.15 + i * 0.035,
+      duration: 0.75,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  }),
+};
+
+/** Metallic PORTFOLIO block — layered copies create the 3D/extrusion feel. */
+function MetalHeading({ started }) {
+  const word = 'PORTFOLIO';
+
   return (
-    <div
-      className="pointer-events-none absolute -right-2 top-6 h-28 w-28 sm:-right-6 sm:top-10 sm:h-36 sm:w-36"
-      aria-hidden="true"
-    >
-      <div className="badge-spin h-full w-full">
-        <svg viewBox="0 0 120 120" className="h-full w-full">
-          <defs>
-            <path
-              id="badge-circle"
-              d="M60,60 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"
-            />
-          </defs>
-          <circle
-            cx="60"
-            cy="60"
-            r="55"
-            fill="rgba(23,16,43,0.85)"
-            stroke="#C4E77B"
-            strokeWidth="1"
-            strokeDasharray="4 7"
-            opacity="0.7"
+    <h1 className="relative select-none" aria-label="Sayma Talukder — Portfolio">
+      <span className="sr-only">
+        Sayma Talukder — Portfolio. Data Science Student, aspiring Data
+        Scientist and AI Researcher.
+      </span>
+
+      <span
+        className="relative block font-cinema text-[clamp(3.4rem,16.5vw,15rem)] leading-[0.82] tracking-cinema"
+        aria-hidden="true"
+      >
+        {/* Depth layers — offset copies behind the metal face create the
+            extruded 3D edge. Drawn as pseudo-elements so the DOM keeps a
+            single copy of the word. */}
+        <span
+          className="metal-depth metal-depth-hero absolute inset-0"
+          data-depth-text={word}
+        />
+
+        {/* Brushed metal face */}
+        <motion.span
+          className="metal metal-sheen relative block"
+          initial={{ opacity: 0, y: 90, scaleY: 0.82 }}
+          animate={
+            started
+              ? { opacity: 1, y: 0, scaleY: 1 }
+              : { opacity: 0, y: 90, scaleY: 0.82 }
+          }
+          transition={{ duration: 1, delay: 0.95, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {word}
+        </motion.span>
+
+        {/* Glitch / scan sweep across the heading */}
+        <motion.span
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: started ? 1 : 0 }}
+          transition={{ delay: 1.7 }}
+        >
+          <motion.span
+            className="absolute inset-x-0 h-[38%] bg-gradient-to-b from-white/25 via-white/10 to-transparent mix-blend-screen"
+            initial={{ top: '-40%' }}
+            animate={{ top: '110%' }}
+            transition={{ duration: 1.1, delay: 1.7, ease: 'easeInOut' }}
           />
-          <text
-            fill="#C4E77B"
-            fontSize="10.5"
-            fontFamily="'Space Grotesk', sans-serif"
-            fontWeight="600"
-            letterSpacing="2.6"
+          {/* Chromatic split ghosts */}
+          <motion.span
+            className="absolute inset-0 font-cinema text-[clamp(3.4rem,16.5vw,15rem)] leading-[0.82] tracking-cinema text-ember-deep/45 mix-blend-screen"
+            initial={{ opacity: 0, x: 0 }}
+            animate={
+              started
+                ? { opacity: [0, 0.85, 0], x: [0, -9, 0] }
+                : { opacity: 0, x: 0 }
+            }
+            transition={{ duration: 0.55, delay: 1.72, ease: 'easeOut' }}
           >
-            <textPath href="#badge-circle" startOffset="0">
-              {text.repeat(2)}
-            </textPath>
-          </text>
-        </svg>
-      </div>
-      <Star className="absolute inset-0 m-auto h-6 w-6 text-lime" />
-    </div>
+            {word}
+          </motion.span>
+          <motion.span
+            className="absolute inset-0 font-cinema text-[clamp(3.4rem,16.5vw,15rem)] leading-[0.82] tracking-cinema text-ember-soft/45 mix-blend-screen"
+            initial={{ opacity: 0, x: 0 }}
+            animate={
+              started
+                ? { opacity: [0, 0.85, 0], x: [0, 9, 0] }
+                : { opacity: 0, x: 0 }
+            }
+            transition={{ duration: 0.55, delay: 1.74, ease: 'easeOut' }}
+          >
+            {word}
+          </motion.span>
+        </motion.span>
+
+        {/* Soft glow beneath the word */}
+        <motion.span
+          className="pointer-events-none absolute -bottom-6 left-1/2 h-24 w-[86%] -translate-x-1/2 rounded-[100%] bg-silver-100/10 blur-3xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: started ? 1 : 0 }}
+          transition={{ delay: 1.5, duration: 1 }}
+        />
+      </span>
+    </h1>
   );
 }
 
-/** Small stacked text block used as a floating editorial label. */
-function FloatingLabel({ className = '', children, color = 'text-lime' }) {
+/** Minimal cinematic HUD frame around the hero. */
+function HudFrame() {
   return (
-    <div
-      className={`pointer-events-none absolute rounded-xl border border-white/15 bg-ink-950/70 px-3 py-2 font-display text-[10px] uppercase leading-tight tracking-[0.18em] backdrop-blur-md ${color} ${className}`}
-    >
-      {children}
-    </div>
+    <>
+      {/* Corner brackets */}
+      <span
+        className="pointer-events-none absolute left-5 top-[13vh] h-10 w-10 border-l border-t border-white/15 sm:left-8 lg:left-12"
+        aria-hidden="true"
+      />
+      <span
+        className="pointer-events-none absolute right-5 top-[13vh] h-10 w-10 border-r border-t border-white/15 sm:right-8 lg:right-12"
+        aria-hidden="true"
+      />
+      <span
+        className="pointer-events-none absolute bottom-[9vh] left-5 h-10 w-10 border-b border-l border-white/15 sm:left-8 lg:left-12"
+        aria-hidden="true"
+      />
+      <span
+        className="pointer-events-none absolute bottom-[9vh] right-5 h-10 w-10 border-b border-r border-white/15 sm:right-8 lg:right-12"
+        aria-hidden="true"
+      />
+    </>
   );
 }
 
 export default function Hero() {
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    const reduce =
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduce) {
+      setStarted(true);
+      return;
+    }
+
+    // Start the sequence on the next frame so the initial dark frame renders.
+    const t = requestAnimationFrame(() => setStarted(true));
+    return () => cancelAnimationFrame(t);
+  }, []);
+
+  // Let visitors skip the intro with a keypress or a click.
+  useEffect(() => {
+    if (!started) return;
+    const skip = (e) => {
+      if (e.type === 'keydown' && e.key !== 'Escape' && e.key !== 'Enter') {
+        return;
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+    window.addEventListener('keydown', skip);
+    return () => window.removeEventListener('keydown', skip);
+  }, [started]);
+
   return (
     <section
       id="home"
-      className="relative flex min-h-[100svh] items-center overflow-hidden px-5 pb-20 pt-32 sm:px-8 sm:pb-24 sm:pt-36 lg:px-12"
+      className="relative flex min-h-[100svh] items-center overflow-hidden px-5 pb-24 pt-28 sm:px-8 sm:pt-32 lg:px-12"
     >
-      {/* Plum gradient wash behind the headline */}
+      {/* Cinematic light pool behind the headline */}
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[70vh]"
-        style={{
-          background:
-            'radial-gradient(ellipse 65% 70% at 50% 10%, #24134B 0%, #17102B 45%, rgba(5,5,5,0) 78%)',
-        }}
+        className="pointer-events-none absolute inset-x-0 top-1/2 -z-10 h-[70vh] -translate-y-1/2 bg-light-pool"
         aria-hidden="true"
       />
 
+      {/* Travelling light bar */}
+      <div className="light-bar" aria-hidden="true" />
+
+      <HudFrame />
+
       <div className="shell relative">
-        {/* ---------- Top strip: intro + rotating badge ---------- */}
-        <div className="relative flex items-start justify-between">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="flex items-center gap-3"
-          >
-            <span className="h-px w-10 bg-lime sm:w-16" aria-hidden="true" />
-            <p className="font-display text-[11px] uppercase tracking-[0.32em] text-paper sm:text-xs">
-              Hello, I&apos;m Sayma
-            </p>
-          </motion.div>
-
-          <CircularBadge />
-        </div>
-
-        {/* ---------- Oversized headline ---------- */}
-        <h1 className="display relative mt-8 sm:mt-10">
-          <motion.span
-            initial={{ opacity: 0, y: 60 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="block whitespace-nowrap text-lime text-[clamp(2.35rem,11.2vw,9.5rem)]"
-          >
-            SAYMA&apos;S
-          </motion.span>
-
-          <motion.span
-            initial={{ opacity: 0, y: 60 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-            className="relative block whitespace-nowrap text-paper text-[clamp(2.35rem,11.2vw,9.5rem)]"
-          >
-            PORT
-            <span className="relative inline-block text-lime">
-              F
-              {/* Star sitting inside the F counter */}
-              <Star className="absolute left-1/2 top-1/2 h-[0.26em] w-[0.26em] -translate-x-1/2 -translate-y-1/2 text-blush" />
-            </span>
-            OLIO
-            {/* Hand-drawn underline sweeping the word */}
-            <Squiggle
-              className="absolute -bottom-1 left-[8%] h-3 w-[84%] sm:-bottom-3"
-              color="#F04A9B"
-              width={400}
+        {/* ---------- Act 1: the name ---------- */}
+        <div className="relative overflow-hidden">
+          <p className="mb-3 flex items-center gap-3 sm:mb-4">
+            <motion.span
+              className="h-px w-8 bg-silver-500 sm:w-14"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: started ? 1 : 0 }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              style={{ transformOrigin: 'left' }}
+              aria-hidden="true"
             />
-          </motion.span>
-        </h1>
+            <motion.span
+              className="font-mono text-[10px] uppercase tracking-[0.34em] text-silver-400 sm:text-[11px]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: started ? 1 : 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              Data Science · AI Research
+            </motion.span>
+          </p>
 
-        {/* ---------- Subtitle + intro ---------- */}
-        <div className="relative mt-10 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-end">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.28 }}
-            className="min-w-0 lg:col-span-7"
-          >
-            <p className="font-display text-base uppercase leading-[1.35] tracking-[0.06em] text-aqua sm:text-xl lg:text-2xl">
-              <span className="whitespace-normal lg:whitespace-nowrap">
-                Data Science Student
-              </span>
-              <span className="mx-2 text-blush">|</span>
-              <span className="whitespace-normal lg:whitespace-nowrap">
-                Sales Tech Engineer
-              </span>
-              <span className="mx-2 text-blush">|</span>
-              <span className="whitespace-normal text-lime lg:whitespace-nowrap">
-                AI &amp; ML Enthusiast
-              </span>
-            </p>
-
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-white/65 sm:text-lg">
-              Exploring the intersection of data, artificial intelligence,
-              technology, and creative problem-solving.
-            </p>
-
-            {/* Skill tags */}
-            <div className="mt-8 flex flex-wrap gap-2.5">
-              {skillTags.map((tag, i) => (
+          <span className="block overflow-hidden">
+            <span className="flex flex-wrap font-display text-[clamp(1.05rem,3.4vw,2.1rem)] uppercase leading-tight tracking-[0.24em] text-silver-200">
+              {LETTERS.map((char, i) => (
                 <motion.span
-                  key={tag}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.45, delay: 0.4 + i * 0.06 }}
-                  className="tag-outline hover:border-lime hover:bg-lime hover:text-ink-950"
+                  key={`${char}-${i}`}
+                  className="inline-block"
+                  custom={i}
+                  variants={letterVariants}
+                  initial="hidden"
+                  animate={started ? 'show' : 'hidden'}
                 >
-                  {tag}
+                  {char === ' ' ? ' ' : char}
                 </motion.span>
               ))}
-            </div>
-
-            {/* CTAs */}
-            <div className="mt-10 flex flex-wrap items-center gap-4">
-              <motion.a
-                href="#projects"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.7 }}
-                className="btn-lime"
-              >
-                Explore My Work
-                <ArrowUpRight className="h-4 w-4" />
-              </motion.a>
-
-              <motion.a
-                href="#contact"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.78 }}
-                className="btn-outline"
-              >
-                Let&apos;s Connect
-                <ArrowUpRight className="h-4 w-4" />
-              </motion.a>
-            </div>
-          </motion.div>
-
-          {/* Floating editorial labels + ornaments */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="hidden lg:col-span-5 lg:block"
-          >
-            <div className="relative mx-auto h-64 w-full max-w-sm">
-              <FloatingLabel className="left-0 top-4 animate-floaty">
-                <span className="block text-white/50">Currently</span>
-                <span className="block text-lime">Sales Tech Engineer</span>
-              </FloatingLabel>
-
-              <FloatingLabel
-                className="right-0 top-24 animate-floaty text-aqua [animation-delay:1.2s]"
-              >
-                <span className="block text-white/50">Studying</span>
-                <span className="block">BSc Data Science</span>
-              </FloatingLabel>
-
-              <FloatingLabel
-                className="bottom-2 left-10 animate-floaty text-blush [animation-delay:2.2s]"
-              >
-                <span className="block text-white/50">Based in</span>
-                <span className="block">Dhaka, Bangladesh</span>
-              </FloatingLabel>
-
-              <HandArrow className="absolute right-4 top-6 w-24 rotate-[24deg]" />
-              <Burst className="absolute bottom-10 right-6 h-8 w-8 animate-wiggle text-lilac" />
-              <PlusMark className="absolute left-2 top-28 h-3 w-3 text-aqua/60" />
-            </div>
-          </motion.div>
+            </span>
+          </span>
         </div>
 
-        {/* ---------- Scroll cue ---------- */}
+        {/* ---------- Act 2: the metallic heading ---------- */}
+        <div className="relative mt-4 sm:mt-6">
+          <MetalHeading started={started} />
+        </div>
+
+        {/* ---------- Act 3: title + CTAs ---------- */}
+        <div className="mt-8 sm:mt-10">
+          <motion.p
+            className="max-w-2xl font-sans text-[13px] uppercase leading-[1.6] tracking-[0.16em] text-silver-300 sm:text-base lg:text-lg"
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: started ? 1 : 0, y: started ? 0 : 18 }}
+            transition={{ duration: 0.8, delay: 2.05, ease: [0.16, 1, 0.3, 1] }}
+          >
+            Data Science Student
+            <span className="mx-2 text-ember/70">|</span>
+            <span className="text-silver-100">
+              Aspiring Data Scientist &amp; AI Researcher
+            </span>
+          </motion.p>
+
+          <motion.p
+            className="mt-5 max-w-xl text-sm leading-relaxed text-white/55 sm:text-base"
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: started ? 1 : 0, y: started ? 0 : 18 }}
+            transition={{ duration: 0.8, delay: 2.2, ease: [0.16, 1, 0.3, 1] }}
+          >
+            Exploring the intersection of data, artificial intelligence,
+            technology and creative problem-solving.
+          </motion.p>
+
+          <div className="mt-9 flex flex-wrap items-center gap-4">
+            <motion.a
+              href="#projects"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: started ? 1 : 0, y: started ? 0 : 16 }}
+              transition={{ duration: 0.7, delay: 2.35, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -3 }}
+              whileTap={{ scale: 0.98 }}
+              className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-silver-100 px-7 py-3.5 font-display text-[11px] uppercase tracking-[0.18em] text-ink-950 transition-shadow duration-300 hover:shadow-metal-glow"
+            >
+              {/* Light sweep on hover */}
+              <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/70 to-transparent transition-transform duration-[900ms] group-hover:translate-x-full" />
+              <span className="relative">Explore My Work</span>
+              <ArrowUpRight className="relative h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </motion.a>
+
+            <motion.a
+              href="#contact"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: started ? 1 : 0, y: started ? 0 : 16 }}
+              transition={{ duration: 0.7, delay: 2.45, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -3 }}
+              whileTap={{ scale: 0.98 }}
+              className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full border border-white/25 px-7 py-3.5 font-display text-[11px] uppercase tracking-[0.18em] text-silver-100 transition-colors duration-300 hover:border-silver-100/60 hover:bg-white/5"
+            >
+              <span className="relative">Contact Me</span>
+              <ArrowUpRight className="relative h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </motion.a>
+          </div>
+        </div>
+
+        {/* ---------- Act 4: scroll cue ---------- */}
         <motion.a
           href="#about"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.6 }}
-          className="group mt-14 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.28em] text-white/40 transition-colors hover:text-lime"
+          animate={{ opacity: started ? 1 : 0 }}
+          transition={{ delay: 2.7, duration: 0.7 }}
+          className="group mt-14 inline-flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-white/35 transition-colors hover:text-silver-200"
         >
-          <span className="grid h-8 w-8 place-items-center rounded-full border border-white/20 transition-colors group-hover:border-lime">
-            <ArrowDownRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-y-0.5" />
+          <span className="relative grid h-9 w-9 place-items-center rounded-full border border-white/20 transition-colors group-hover:border-silver-300">
+            <span className="absolute inset-0 animate-ping rounded-full bg-silver-100/10" />
+            <ArrowDownRight className="relative h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-y-0.5" />
           </span>
           Scroll to explore
         </motion.a>

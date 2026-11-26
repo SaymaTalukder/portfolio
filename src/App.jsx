@@ -15,7 +15,7 @@ export default function App() {
     <div className="relative min-h-screen overflow-x-hidden bg-ink-950 text-paper">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-lime focus:px-5 focus:py-3 focus:font-display focus:text-sm focus:uppercase focus:tracking-wider focus:text-ink-950"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-ember focus:px-5 focus:py-3 focus:font-display focus:text-sm focus:uppercase focus:tracking-wider focus:text-ink-950"
       >
         Skip to content
       </a>

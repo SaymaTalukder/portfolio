@@ -20,7 +20,7 @@ export default function Footer() {
         className="pointer-events-none absolute inset-x-0 -top-px h-px"
         style={{
           background:
-            'linear-gradient(90deg, transparent, #C4E77B, #F04A9B, transparent)',
+            'linear-gradient(90deg, transparent, rgba(232,234,237,0.5), #FF8A3D, transparent)',
         }}
         aria-hidden="true"
       />
@@ -28,11 +28,11 @@ export default function Footer() {
       <div className="shell flex flex-col items-center justify-between gap-8 lg:flex-row">
         {/* Wordmark */}
         <div className="text-center lg:text-left">
-          <p className="font-display text-lg uppercase tracking-[0.18em] text-paper">
+          <p className="metal metal-sheen font-display text-lg uppercase tracking-[0.18em]">
             Sayma Talukder Rupa
           </p>
           <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-white/35">
-            Data Science · AI &amp; ML · Sales Tech
+            Data Science · AI &amp; ML · Statistical Modeling
           </p>
         </div>
 
@@ -45,7 +45,7 @@ export default function Footer() {
               target={href.startsWith('http') ? '_blank' : undefined}
               rel="noreferrer noopener"
               aria-label={label}
-              className="grid h-11 w-11 place-items-center rounded-full border border-white/15 text-white/70 transition-all duration-300 hover:-translate-y-1 hover:border-lime hover:bg-lime hover:text-ink-950"
+              className="chrome-border grid h-11 w-11 place-items-center rounded-full border border-white/15 bg-white/[0.03] text-white/70 transition-all duration-300 hover:-translate-y-1 hover:border-silver-100/60 hover:bg-white/[0.08] hover:text-silver-100"
             >
               <Icon className="h-4 w-4" />
             </a>
@@ -60,10 +60,10 @@ export default function Footer() {
           <a
             href="#home"
             aria-label="Back to top"
-            className="group flex items-center gap-2 font-display text-[10px] uppercase tracking-[0.18em] text-white/45 transition-colors hover:text-lime"
+            className="group flex items-center gap-2 font-display text-[10px] uppercase tracking-[0.18em] text-white/45 transition-colors hover:text-ember"
           >
             Top
-            <span className="grid h-8 w-8 place-items-center rounded-full border border-white/15 transition-all duration-300 group-hover:-translate-y-1 group-hover:border-lime">
+            <span className="chrome-border grid h-8 w-8 place-items-center rounded-full border border-white/15 transition-all duration-300 group-hover:-translate-y-1 group-hover:border-silver-100/60">
               <ArrowUp className="h-3.5 w-3.5" />
             </span>
           </a>

@@ -11,7 +11,7 @@ import {
   ArrowUpRight,
 } from 'lucide-react';
 import SectionHeading from './SectionHeading.jsx';
-import { Star, Burst, HandArrow, DashedRing } from './decorative/Decorative.jsx';
+import { ChromeSweep } from './Cinematic.jsx';
 
 const EMAIL = 'mrupa2330001@bsds.uiu.ac.bd';
 const GITHUB_URL = 'https://github.com/SaymaTalukder';
@@ -34,7 +34,7 @@ function TextField({ name, label, type, required, value, onChange, error }) {
         className="mb-2 block font-display text-[10px] uppercase tracking-[0.22em] text-white/45"
       >
         {label}
-        {required && <span className="ml-1 text-blush">*</span>}
+        {required && <span className="ml-1 text-ember-deep">*</span>}
       </label>
       <input
         id={`contact-${name}`}
@@ -45,14 +45,14 @@ function TextField({ name, label, type, required, value, onChange, error }) {
         onChange={onChange}
         placeholder={`Your ${label.toLowerCase()}`}
         aria-invalid={Boolean(error)}
-        className={`w-full rounded-xl border bg-ink-950/60 px-4 py-3.5 text-sm text-paper placeholder:text-white/25 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-lime/30 ${
+        className={`w-full rounded-xl border bg-ink-950/60 px-4 py-3.5 text-sm text-paper placeholder:text-white/25 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-ember/30 ${
           error
-            ? 'border-blush/70 focus:border-blush focus:ring-blush/25'
-            : 'border-white/12 focus:border-lime focus:bg-ink-950/90'
+            ? 'border-ember-deep/70 focus:border-ember-deep focus:ring-ember-deep/25'
+            : 'border-white/12 focus:border-ember focus:bg-ink-950/90'
         }`}
       />
       {error && (
-        <p className="mt-1.5 text-xs text-blush">{error}</p>
+        <p className="mt-1.5 text-xs text-ember-deep">{error}</p>
       )}
     </div>
   );
@@ -105,19 +105,28 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="relative overflow-hidden px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
+    <section
+      id="contact"
+      className="relative overflow-hidden px-5 py-24 sm:px-8 sm:py-32 lg:px-12"
+    >
       {/* Plum wash */}
       <div
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
           background:
-            'radial-gradient(ellipse 75% 65% at 50% 100%, #24134B 0%, #17102B 42%, #050505 82%)',
+            'radial-gradient(ellipse 75% 65% at 50% 100%, rgba(36,19,75,0.75) 0%, rgba(23,16,43,0.5) 42%, rgba(5,5,5,0) 82%)',
         }}
         aria-hidden="true"
       />
-      <Star className="pointer-events-none absolute left-[6%] top-[18%] h-8 w-8 animate-floaty text-blush/25" />
-      <Burst className="pointer-events-none absolute right-[8%] top-[22%] h-10 w-10 animate-wiggle text-lime/25" />
-      <DashedRing className="pointer-events-none absolute -left-10 bottom-[12%] h-36 w-36 animate-spinSlow text-aqua/20" />
+      {/* Scene light behind the closing headline */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[70vh]"
+        style={{
+          background:
+            'radial-gradient(ellipse 60% 50% at 50% 70%, rgba(232,234,237,0.07) 0%, rgba(232,234,237,0) 70%)',
+        }}
+        aria-hidden="true"
+      />
 
       <div className="shell relative">
         {/* ---------- Heading ---------- */}
@@ -128,17 +137,22 @@ export default function Contact() {
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.7 }}
           >
-            <p className="eyebrow justify-center text-lime/90">
-              <span className="h-px w-8 bg-lime" aria-hidden="true" />
-              06 — Contact
-              <span className="h-px w-8 bg-lime" aria-hidden="true" />
-            </p>
+            <div className="flex items-center justify-center gap-3">
+              <span className="h-px w-8 bg-ember" aria-hidden="true" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.34em] text-white/45 sm:text-[11px]">
+                06 — Contact
+              </span>
+              <span className="h-px w-8 bg-ember" aria-hidden="true" />
+            </div>
 
-            <h2 className="display mt-5 text-[clamp(2.2rem,8vw,6rem)] text-paper">
-              LET&apos;S CREATE SOMETHING{' '}
-              <span className="relative inline-block text-lime">
-                AMAZING!
-                <HandArrow className="absolute -right-16 -top-2 hidden w-24 -scale-x-100 rotate-[18deg] lg:block" />
+            <h2
+              className="display metal-depth relative mt-6 text-[clamp(2.1rem,7.5vw,5.6rem)] leading-[0.92] tracking-tight"
+              data-depth-text="LET'S BUILD SOMETHING INTELLIGENT."
+            >
+              <span className="metal metal-sheen relative block">LET&apos;S BUILD</span>
+              <span className="metal metal-sheen relative block">SOMETHING</span>
+              <span className="metal metal-sheen relative block">
+                <span className="metal-accent">INTELLIGENT.</span>
               </span>
             </h2>
 
@@ -161,7 +175,7 @@ export default function Contact() {
             <ChannelCard
               icon={Mail}
               label="Email"
-              accent="#C4E77B"
+              accent="#FF8A3D"
               href={`mailto:${EMAIL}`}
             >
               <span className="break-all font-mono text-sm text-paper">
@@ -169,18 +183,18 @@ export default function Contact() {
               </span>
             </ChannelCard>
 
-            <ChannelCard icon={Github} label="GitHub" accent="#54D6E8" href={GITHUB_URL}>
+            <ChannelCard icon={Github} label="GitHub" accent="#FFB37A" href={GITHUB_URL}>
               <span className="font-mono text-sm text-paper">github.com/SaymaTalukder</span>
             </ChannelCard>
 
-            <ChannelCard icon={Linkedin} label="LinkedIn" accent="#F04A9B" href={LINKEDIN_URL}>
+            <ChannelCard icon={Linkedin} label="LinkedIn" accent="#FFA25C" href={LINKEDIN_URL}>
               <span className="text-sm text-paper">My LinkedIn Profile</span>
             </ChannelCard>
 
-            <div className="flex items-start gap-4 rounded-2xl border border-white/10 bg-ink-900/50 p-5">
-              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-lilac" />
+            <div className="chrome-border flex items-start gap-4 rounded-2xl border border-white/12 bg-ink-900/60 p-5 backdrop-blur-sm">
+              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-ember-glow" />
               <div>
-                <p className="font-display text-[10px] uppercase tracking-[0.24em] text-lilac">
+                <p className="font-display text-[10px] uppercase tracking-[0.24em] text-ember-glow">
                   Based in
                 </p>
                 <p className="mt-1.5 text-sm text-white/75">
@@ -198,9 +212,9 @@ export default function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="relative min-w-0 overflow-hidden rounded-[2rem] border border-white/12 bg-ink-900/70 p-7 backdrop-blur-sm sm:p-9 lg:col-span-7"
+            className="chrome-border relative min-w-0 overflow-hidden rounded-[2rem] border border-white/12 bg-ink-900/70 p-7 backdrop-blur-sm sm:p-9 lg:col-span-7"
           >
-            <span className="absolute inset-x-0 top-0 h-[3px] bg-rule-lime" />
+            <span className="absolute inset-x-0 top-0 h-[3px] bg-rule-ember" />
 
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
               {fields.map((f) => (
@@ -218,7 +232,7 @@ export default function Contact() {
                   htmlFor="contact-message"
                   className="mb-2 block font-display text-[10px] uppercase tracking-[0.22em] text-white/45"
                 >
-                  Message<span className="ml-1 text-blush">*</span>
+                  Message<span className="ml-1 text-ember-deep">*</span>
                 </label>
                 <textarea
                   id="contact-message"
@@ -229,21 +243,21 @@ export default function Contact() {
                   required
                   placeholder="Tell me about your project…"
                   aria-invalid={Boolean(errors.message)}
-                  className={`w-full resize-none rounded-xl border bg-ink-950/60 px-4 py-3.5 text-sm leading-relaxed text-paper placeholder:text-white/25 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-lime/30 ${
+                  className={`w-full resize-none rounded-xl border bg-ink-950/60 px-4 py-3.5 text-sm leading-relaxed text-paper placeholder:text-white/25 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-ember/30 ${
                     errors.message
-                      ? 'border-blush/70 focus:border-blush focus:ring-blush/25'
-                      : 'border-white/12 focus:border-lime focus:bg-ink-950/90'
+                      ? 'border-ember-deep/70 focus:border-ember-deep focus:ring-ember-deep/25'
+                      : 'border-white/12 focus:border-ember focus:bg-ink-950/90'
                   }`}
                 />
                 {errors.message && (
-                  <p className="mt-1.5 text-xs text-blush">{errors.message}</p>
+                  <p className="mt-1.5 text-xs text-ember-deep">{errors.message}</p>
                 )}
               </div>
             </div>
 
             <div className="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="flex items-start gap-2 text-xs leading-relaxed text-white/40">
-                <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-aqua" />
+                <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-ember-soft" />
                 <span>
                   No server is attached to this form — it opens your email
                   client with everything pre-filled so your message actually
@@ -255,7 +269,7 @@ export default function Contact() {
                 type="submit"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                className="btn-lime shrink-0"
+                className="btn-ember shrink-0"
               >
                 {status === 'opened' ? (
                   <CheckCircle2 className="h-4 w-4" />
@@ -273,7 +287,7 @@ export default function Contact() {
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
                   role="status"
-                  className="mt-4 overflow-hidden rounded-xl border border-lime/30 bg-lime/10 px-4 py-3 text-sm text-lime"
+                  className="mt-4 overflow-hidden rounded-xl border border-ember/30 bg-ember/10 px-4 py-3 text-sm text-ember"
                 >
                   Your mail client should now be open with the message ready.
                   Just press send there — or write to{' '}
@@ -298,11 +312,15 @@ function ChannelCard({ icon: Icon, label, accent, href, children }) {
       target={href.startsWith('http') ? '_blank' : undefined}
       rel="noreferrer noopener"
       whileHover={{ x: 5 }}
-      className="group flex items-start gap-4 rounded-2xl border border-white/10 bg-ink-900/50 p-5 transition-colors duration-300 hover:border-white/30"
+      className="chrome-border group relative flex items-start gap-4 overflow-hidden rounded-2xl border border-white/12 bg-ink-900/60 p-5 backdrop-blur-sm transition-colors duration-300 hover:border-white/30"
     >
       <span
-        className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border"
-        style={{ borderColor: `${accent}55`, background: `${accent}18`, color: accent }}
+        className="chrome-border grid h-11 w-11 shrink-0 place-items-center rounded-xl border"
+        style={{
+          borderColor: `${accent}55`,
+          background: `linear-gradient(140deg, rgba(255,255,255,0.10), ${accent}18)`,
+          color: accent,
+        }}
       >
         <Icon className="h-5 w-5" />
       </span>
@@ -314,12 +332,14 @@ function ChannelCard({ icon: Icon, label, accent, href, children }) {
         >
           {label}
         </p>
-        <div className="mt-1.5 transition-colors group-hover:text-lime">
+        <div className="mt-1.5 transition-colors group-hover:text-ember">
           {children}
         </div>
       </div>
 
-      <ArrowUpRight className="h-4 w-4 shrink-0 self-center text-white/25 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-lime" />
+      <ArrowUpRight className="h-4 w-4 shrink-0 self-center text-white/25 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-ember" />
+
+      <ChromeSweep />
     </motion.a>
   );
 }

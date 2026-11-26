@@ -1,16 +1,22 @@
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, ArrowUpRight, Star } from 'lucide-react';
+import { ExternalLink, Github, ArrowUpRight, ArrowRight } from 'lucide-react';
 import SectionHeading from './SectionHeading.jsx';
+import { ChromeSweep } from './Cinematic.jsx';
 import {
   AtlasPreview,
   ClimaGuardPreview,
   GridMatePreview,
   SafetyAppPreview,
 } from './decorative/ProjectPreviews.jsx';
-import { Burst, Squiggle, PlusMark } from './decorative/Decorative.jsx';
 
 /**
- * Featured projects from the CV.
+ * Featured projects — presented as a numbered filmography.
+ *
+ * Each entry is a wide horizontal plate: index and title on the left, the
+ * project preview on the right. The surface stays monochrome chrome so the
+ * previews carry the colour, and the type treatment matches the hero's
+ * metal rather than competing with it.
+ *
  * `links` only contains URLs that actually exist — no invented destinations.
  */
 const projects = [
@@ -27,9 +33,7 @@ const projects = [
       'Technology Comparison Tools',
       'Find the Right Technology decision tree',
     ],
-    accent: '#C4E77B',
-    tint: 'rgba(196,231,123,0.10)',
-    border: 'rgba(196,231,123,0.30)',
+    accent: '#FF8A3D',
     Preview: AtlasPreview,
     role: 'Creator & Developer',
     links: [
@@ -39,15 +43,14 @@ const projects = [
         icon: ExternalLink,
       },
     ],
-    layout: 'feature',
   },
   {
     id: 'ClimaGuard',
     title: 'ClimaGuard',
-    tagline: 'Regional Environmental Disease-Risk Nowcast',
+    tagline: 'Weather-Based Personalized Disease Risk Nowcast',
     description:
       'An end-to-end machine learning project estimating regional disease risks using climate, air-quality, and socioeconomic data.',
-    stack: ['Python', 'DVC', 'XGBoost', 'Random Forest', 'SHAP', 'Flask', 'Open-Meteo API'],
+    stack: ['Python', 'DVC', 'XGBoost', 'Random Forest', 'SHAP', 'Flask'],
     features: [
       'Machine Learning prediction pipelines',
       'SHAP explainability',
@@ -55,13 +58,10 @@ const projects = [
       'Real-time weather integration',
       'Interactive Bangladesh regional risk maps',
     ],
-    accent: '#54D6E8',
-    tint: 'rgba(84,214,232,0.10)',
-    border: 'rgba(84,214,232,0.30)',
+    accent: '#FFB37A',
     Preview: ClimaGuardPreview,
     role: 'Project Contributor',
     links: [],
-    layout: 'half',
   },
   {
     id: 'GridMate',
@@ -69,23 +69,20 @@ const projects = [
     tagline: 'Enterprise AI Teammate & Knowledge Conflict Engine',
     description:
       'An enterprise AI workspace that processes organizational documents, extracts source-grounded information, and detects contradictions across knowledge bases.',
-    stack: ['TypeScript', 'React', 'Vite', 'Tailwind CSS', 'PostgreSQL', 'Prisma'],
+    stack: ['TypeScript', 'React', 'Vite', 'Tailwind CSS', 'PostgreSQL'],
     features: [
       'Multi-channel AI agents',
       'Verifiable citation pipelines',
       'Role-based workspace governance',
     ],
-    accent: '#F04A9B',
-    tint: 'rgba(240,74,155,0.10)',
-    border: 'rgba(240,74,155,0.30)',
+    accent: '#FFA25C',
     Preview: GridMatePreview,
     role: 'Project Contributor',
     links: [],
-    layout: 'half',
   },
   {
     id: 'My Safety App',
-    title: 'My Safety App',
+    title: 'MySafety',
     tagline: 'Personal Safety Application',
     description:
       'A collaborative project focused on developing a user-friendly personal safety platform with intuitive navigation, accessibility, and structured milestone delivery.',
@@ -95,60 +92,67 @@ const projects = [
       'Accessibility focus',
       'Structured milestone delivery',
     ],
-    accent: '#A99BEF',
-    tint: 'rgba(169,155,239,0.10)',
-    border: 'rgba(169,155,239,0.30)',
+    accent: '#FFA25C',
     Preview: SafetyAppPreview,
     role: 'Team Contributor (UI/UX & Development)',
     links: [],
-    layout: 'feature',
   },
 ];
 
-/** Sticky colored label listing the tech stack. */
-function StackTags({ stack, accent }) {
+/** The tech stack as a single elegant inline list rather than busy chips. */
+function StackLine({ stack }) {
   return (
-    <div className="flex flex-wrap gap-1.5">
-      {stack.map((s) => (
-        <span
+    <ul className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+      {stack.map((s, i) => (
+        <li
           key={s}
-          className="rounded border border-white/12 bg-white/[0.04] px-2 py-1 font-mono text-[10px] uppercase tracking-wider text-white/60"
+          className="flex items-center gap-2.5 font-mono text-[10.5px] uppercase tracking-[0.12em] text-white/45 transition-colors duration-300 hover:text-silver-200"
         >
+          {i > 0 && (
+            <span className="text-white/15" aria-hidden="true">
+              ·
+            </span>
+          )}
           {s}
-        </span>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
 
-function LinkButtons({ links, accent }) {
+function LinkButtons({ links }) {
   if (!links.length) return null;
   return (
-    <div className="mt-7 flex flex-wrap gap-3">
+    <div className="mt-8 flex flex-wrap gap-3">
       {links.map(({ label, href, icon: Icon }) => (
-        <a
+        <motion.a
           key={label}
           href={href}
           target="_blank"
           rel="noreferrer noopener"
-          className="group inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-display text-[11px] uppercase tracking-[0.16em] transition-all duration-300 hover:-translate-y-0.5"
-          style={{
-            background: accent,
-            color: '#050505',
-          }}
+          whileHover={{ y: -3 }}
+          whileTap={{ scale: 0.97 }}
+          className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-silver-100 px-5 py-2.5 font-display text-[11px] uppercase tracking-[0.16em] text-ink-950 transition-shadow duration-300 hover:shadow-metal-glow"
         >
-          <Icon className="h-3.5 w-3.5" />
-          {label}
-          <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-        </a>
+          <span
+            className="pointer-events-none absolute inset-0 -translate-x-full bg-white/60 transition-transform duration-[900ms] group-hover:translate-x-full"
+            aria-hidden="true"
+          />
+          <Icon className="relative h-3.5 w-3.5" />
+          <span className="relative">{label}</span>
+          <ArrowUpRight className="relative h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </motion.a>
       ))}
     </div>
   );
 }
 
-/** Full-width hero card for the lead projects. */
-function FeatureCard({ project, index }) {
-  const { accent, tint, border, Preview } = project;
+/**
+ * ProjectPlate — one project as a wide cinematic plate.
+ * Index and title lead on the left; the preview film strip sits right.
+ */
+function ProjectPlate({ project, index }) {
+  const { accent, Preview } = project;
 
   return (
     <motion.article
@@ -156,160 +160,129 @@ function FeatureCard({ project, index }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.7, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ y: -8 }}
-      className="group relative overflow-hidden rounded-[2rem] border"
-      style={{ borderColor: border, background: `linear-gradient(150deg, ${tint}, rgba(10,10,15,0.92) 60%)` }}
+      className="chrome-border group relative overflow-hidden rounded-[2rem] border border-white/12 bg-ink-900/55 backdrop-blur-sm transition-colors duration-500 hover:border-white/28"
     >
-      {/* Preview panel */}
-      <div className="relative overflow-hidden border-b border-white/10 sm:border-b-0 sm:border-r">
-        <div className="aspect-[5/3] w-full sm:h-full sm:aspect-auto sm:min-h-[19rem]">
-          <Preview />
-        </div>
-        {/* Sweep highlight on hover */}
-        <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-[1.1s] group-hover:translate-x-full" />
-      </div>
-
-      {/* Content */}
-      <div className="relative p-7 sm:p-9 lg:p-10">
-        <div className="flex flex-wrap items-center gap-3">
-          <span
-            className="rounded-md px-2.5 py-1 font-display text-[10px] uppercase tracking-[0.18em]"
-            style={{ background: accent, color: '#050505' }}
-          >
-            {project.role}
-          </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/40">
-            {project.stack.length} technologies
-          </span>
-        </div>
-
-        <h3 className="mt-5 font-display text-[clamp(1.9rem,4.5vw,3.2rem)] uppercase leading-[0.95] tracking-tight text-paper">
-          {project.title}
-        </h3>
-
-        <p className="mt-2 font-serif text-lg italic" style={{ color: accent }}>
-          {project.tagline}
-        </p>
-
-        <p className="mt-5 max-w-xl text-sm leading-relaxed text-white/65 sm:text-base">
-          {project.description}
-        </p>
-
-        {/* Feature list */}
-        <ul className="mt-6 grid gap-2 sm:grid-cols-2">
-          {project.features.map((f) => (
-            <li key={f} className="flex items-start gap-2.5 text-sm text-white/70">
-              <Star className="mt-0.5 h-3.5 w-3.5 shrink-0" style={{ color: accent }} />
-              <span>{f}</span>
-            </li>
-          ))}
-        </ul>
-
-        <div className="mt-7">
-          <StackTags stack={project.stack} accent={accent} />
-        </div>
-
-        <LinkButtons links={project.links} accent={accent} />
-      </div>
-
-      {/* Oversized ghost number */}
-      <span
-        className="pointer-events-none absolute -right-2 -top-4 font-display text-[7rem] leading-none opacity-[0.06]"
-        style={{ color: accent }}
-      >
-        {String(index + 1).padStart(2, '0')}
-      </span>
-    </motion.article>
-  );
-}
-
-/** Half-width card with a compact preview strip. */
-function HalfCard({ project, index }) {
-  const { accent, tint, border, Preview } = project;
-
-  return (
-    <motion.article
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.65, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ y: -8 }}
-      className="group relative flex flex-col overflow-hidden rounded-[2rem] border"
-      style={{ borderColor: border, background: `linear-gradient(150deg, ${tint}, rgba(10,10,15,0.92) 60%)` }}
-    >
-      <div className="relative overflow-hidden border-b border-white/10">
-        <div className="aspect-[16/8] w-full">
-          <Preview />
-        </div>
-        <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-[1.1s] group-hover:translate-x-full" />
-      </div>
-
-      <div className="relative flex flex-1 flex-col p-7">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h3 className="font-display text-2xl uppercase leading-none tracking-tight text-paper sm:text-3xl">
-              {project.title}
-            </h3>
-            <p className="mt-2 font-serif text-base italic" style={{ color: accent }}>
-              {project.tagline}
-            </p>
+      <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr]">
+        {/* ---------- Content ---------- */}
+        <div className="relative order-2 flex flex-col p-7 sm:p-9 lg:order-1 lg:p-10">
+          {/* Index + role */}
+          <div className="flex items-center gap-4">
+            <span className="font-mono text-[11px] tracking-[0.24em] text-white/30">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+            <span
+              className="h-px flex-1"
+              style={{
+                background: `linear-gradient(90deg, ${accent}, transparent)`,
+                opacity: 0.5,
+              }}
+              aria-hidden="true"
+            />
+            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/35">
+              {project.role}
+            </span>
           </div>
-          <Burst className="h-6 w-6 shrink-0 animate-wiggle" style={{ color: accent }} />
+
+          {/* Title */}
+          <h3 className="mt-6 font-display text-[clamp(2rem,5vw,3.4rem)] uppercase leading-[0.92] tracking-tight text-paper">
+            {project.title}
+          </h3>
+
+          <p
+            className="mt-2.5 font-mono text-[11px] uppercase tracking-[0.16em]"
+            style={{ color: accent }}
+          >
+            {project.tagline}
+          </p>
+
+          <p className="mt-6 max-w-lg text-sm leading-relaxed text-white/65 sm:text-[15px]">
+            {project.description}
+          </p>
+
+          {/* Feature list */}
+          <ul className="mt-6 space-y-2">
+            {project.features.map((f) => (
+              <li
+                key={f}
+                className="flex items-start gap-3 text-[13.5px] leading-relaxed text-white/70"
+              >
+                <span
+                  className="mt-[0.5rem] h-1.5 w-1.5 shrink-0 rotate-45"
+                  style={{ background: accent }}
+                  aria-hidden="true"
+                />
+                <span>{f}</span>
+              </li>
+            ))}
+          </ul>
+
+          {/* Stack */}
+          <div className="mt-7 border-t border-white/10 pt-6">
+            <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-white/30">
+              Built with
+            </p>
+            <div className="mt-2.5">
+              <StackLine stack={project.stack} />
+            </div>
+          </div>
+
+          <LinkButtons links={project.links} />
         </div>
 
-        <p className="mt-4 text-sm leading-relaxed text-white/65">
-          {project.description}
-        </p>
+        {/* ---------- Preview ---------- */}
+        <div className="relative order-1 overflow-hidden border-b border-white/10 lg:order-2 lg:border-b-0 lg:border-l">
+          <div className="aspect-[16/10] w-full lg:aspect-auto lg:h-full lg:min-h-[24rem]">
+            <Preview />
+          </div>
 
-        <ul className="mt-5 space-y-2">
-          {project.features.map((f) => (
-            <li key={f} className="flex items-start gap-2.5 text-[13px] text-white/65">
-              <PlusMark className="mt-1 h-2.5 w-2.5 shrink-0" style={{ color: accent }} />
-              <span>{f}</span>
-            </li>
-          ))}
-        </ul>
+          {/* Vignette so the preview sits into the plate */}
+          <div
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_70%_at_50%_50%,transparent_30%,rgba(5,5,5,0.72)_100%)]"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(5,5,5,0.6)_0%,transparent_28%)] lg:bg-[linear-gradient(270deg,rgba(5,5,5,0.55)_0%,transparent_30%)]"
+            aria-hidden="true"
+          />
 
-        <div className="mt-6">
-          <StackTags stack={project.stack} accent={accent} />
+          <ChromeSweep />
+
+          {/* Hover arrow */}
+          <span
+            className="pointer-events-none absolute bottom-5 right-5 grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-ink-950/60 text-silver-200 opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:opacity-100"
+            aria-hidden="true"
+          >
+            <ArrowRight className="h-4 w-4" />
+          </span>
         </div>
-
-        <div className="mt-auto">
-          <LinkButtons links={project.links} accent={accent} />
-        </div>
-
-        <span className="mt-6 font-mono text-[10px] uppercase tracking-[0.18em] text-white/35">
-          {project.role}
-        </span>
       </div>
     </motion.article>
   );
 }
 
 export default function Projects() {
-  const feature = projects.filter((p) => p.layout === 'feature');
-  const half = projects.filter((p) => p.layout === 'half');
-
   return (
-    <section id="projects" className="relative px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
-      <div className="shell">
+    <section
+      id="projects"
+      className="relative overflow-hidden px-5 py-24 sm:px-8 sm:py-32 lg:px-12"
+    >
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_55%_45%_at_22%_18%,rgba(232,234,237,0.05)_0%,rgba(5,5,5,0)_72%)]"
+        aria-hidden="true"
+      />
+
+      <div className="shell relative">
         <SectionHeading
-          eyebrow="04 — Featured projects"
+          eyebrow="03 — Featured projects"
           title="THINGS I"
           accent="BUILT"
           description="Four builds that each taught me a different way of thinking — from decision trees to risk maps to contradiction engines."
         />
 
         <div className="mt-16 flex flex-col gap-6">
-          {feature.map((p, i) => (
-            <FeatureCard key={p.id} project={p} index={i} />
+          {projects.map((p, i) => (
+            <ProjectPlate key={p.id} project={p} index={i} />
           ))}
-
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            {half.map((p, i) => (
-              <HalfCard key={p.id} project={p} index={i} />
-            ))}
-          </div>
         </div>
 
         {/* GitHub callout — real profile link only */}
@@ -322,14 +295,14 @@ export default function Projects() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           whileHover={{ y: -4 }}
-          className="group mt-10 flex flex-col items-start justify-between gap-5 overflow-hidden rounded-[2rem] border border-white/12 bg-ink-900/60 p-8 transition-colors duration-300 hover:border-lime/50 sm:flex-row sm:items-center"
+          className="chrome-border group mt-10 flex flex-col items-start justify-between gap-5 overflow-hidden rounded-[2rem] border border-white/12 bg-ink-900/60 p-8 backdrop-blur-sm transition-colors duration-300 hover:border-silver-300/40 sm:flex-row sm:items-center"
         >
           <div className="flex items-center gap-5">
-            <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-lime text-ink-950">
+            <span className="chrome-border grid h-14 w-14 shrink-0 place-items-center rounded-full border border-white/20 bg-white/[0.06] text-silver-100 transition-transform duration-500 group-hover:scale-105">
               <Github className="h-6 w-6" />
             </span>
             <div>
-              <p className="font-display text-[10px] uppercase tracking-[0.24em] text-lime">
+              <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-white/35">
                 More on GitHub
               </p>
               <p className="mt-1 font-display text-xl uppercase tracking-tight text-paper">
@@ -339,12 +312,13 @@ export default function Projects() {
           </div>
 
           <div className="flex items-center gap-3">
-            <Squiggle className="hidden h-3 w-28 sm:block" color="#54D6E8" />
-            <span className="inline-flex items-center gap-2 font-display text-[11px] uppercase tracking-[0.18em] text-white/70 transition-colors group-hover:text-lime">
+            <span className="inline-flex items-center gap-2 font-display text-[11px] uppercase tracking-[0.18em] text-white/70 transition-colors group-hover:text-silver-100">
               Visit profile
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
             </span>
           </div>
+
+          <ChromeSweep />
         </motion.a>
       </div>
     </section>
